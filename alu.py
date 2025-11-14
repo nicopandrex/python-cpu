@@ -45,7 +45,16 @@ V_FLAG = 0b0001
 
 
 class Alu:
-
+    def set_op(self, op):
+        """
+        Public-facing setter. Added 2025-11-09. Students will need to add this
+        to their ALU implementation.
+        """
+        if op in self._ops.keys():
+            self._op = op
+        else:
+            raise ValueError(f"Bad op: {op}")
+    
     def __init__(self):
         """
         Here we initialize the ALU when instantiated.
