@@ -27,13 +27,19 @@ class Memory:
     def _check_addr(self, address):
         # Make sure address is positive, in the desired range,
         # otherwise raise a `ValueError`. Replace `pass` below.
-        pass
+        
+        if not isinstance(address, int):
+            raise TypeError("Address must be an integer.")
+        if address < 0 or address >= STACK_BASE:
+            raise ValueError(f"Address {address:#06x} out of range.")
 
     def write_enable(self, b):
         # Make sure `b` is a Boolean (hint: use `isinstance()).
         # If not, raise `TypeError`. If OK, then set
         # `_write_enable` accordingly. Replace `pass` below.
-        pass
+        if not isinstance(b, bool):
+            raise TypeError("write_enable argument must be a Boolean.")
+        self._write_enable = b
 
     def read(self, addr):
         """
@@ -42,7 +48,8 @@ class Memory:
         # Make sure `addr` is OK by calling `_check_addr`. If OK, return value
         # from `_cells` or default if never written. (Hint: use `.get()`.)
         # Replace `pass` below.
-        pass
+        self._check_addr(addr)
+        return self._cells.get(addr, self.default)
 
     def write(self, addr, value):
         """
@@ -52,7 +59,11 @@ class Memory:
         # Otherwise, call `_check_addr()`. If OK, write masked value to the
         # selected address, then turn off `_write_enable` when done. Return
         # `True` on success. Replace `pass` below.
-        pass
+        if not self._write_enable:
+            raise RuntimeError("Write attempted while write_enable is False.")
+        self._check_addr(addr)
+        self._cells[addr] = value & 0xFFFF
+        self._write_enable = False
         return True
 
     def hexdump(self, start=0, stop=None, width=8):
@@ -125,7 +136,13 @@ class InstructionMemory(Memory):
         # `super().write(start_addr + offset, word)` as needed. Important:
         # Ensure that `_loading` and `_write_enable` are set to `False` when
         # done. (Hint: use `try`/`finally`.) Replace `pass` below.
-        pass
+        try:
+            for offset, word in enumerate(words):
+                self.write_enable(True)
+                super().write(start_addr + offset, word)
+        finally:
+            self._loading = False
+            self._write_enable = False
 
 
 if __name__ == "__main__":
