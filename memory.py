@@ -30,7 +30,7 @@ class Memory:
         
         if not isinstance(address, int):
             raise TypeError("Address must be an integer.")
-        if address < 0 or address >= STACK_BASE:
+        if address < 0 or address > 0xFFFF:
             raise ValueError(f"Address {address:#06x} out of range.")
 
     def write_enable(self, b):
