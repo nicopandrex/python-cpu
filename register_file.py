@@ -41,8 +41,12 @@ class Register:
             raise ValueError(f"Value {value} is out of range")
         else:
             self.value = value
+    @property
+    def raw(self):
+        return self.value & 0xFFFF  # always unsigned
+    
     def __repr__(self):
-        return f"{self.name}: {self.value:04X}"
+        return f"{self.raw:04X}"
 
 
 class RegisterFile:
