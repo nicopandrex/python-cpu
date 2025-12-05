@@ -1,11 +1,13 @@
 """
+Written By Nico Lippiatt-Cook and Birch Saccamango
+
 Catamount Processing Unit
 A toy 16-bit Harvard architecture CPU.
 
 CS 2210 Computer Organization
 Clayton Cafiero <cbcafier@uvm.edu>
 
-Written By Nico Lippiatt-Cook and Birch Saccamango 
+ 
 STARTER CODE
 """
 
