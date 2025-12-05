@@ -2,7 +2,7 @@
         LUI   R0, 0x01
 
         LOADI R1, 0x01
-        LUI   R1, 0x00
+        LUI   R1, 0x80        
 
         SHFT  R2, R0, R1
         ADDI  R1, R1, 1

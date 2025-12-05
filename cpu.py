@@ -91,20 +91,20 @@ class Cpu:
                 case "LOAD":
                     rd = self._decoded.rd
                     ra = self._decoded.ra
-                    imm = self.sext(self._decoded.imm, 8)
+                    offset = self.sext(self._decoded.addr, 6) 
                     ra_val = self._regs.execute(ra=ra)[0]
-                    addr = (ra_val + imm)
-                    data = self._d_mem.read(addr)
+                    addr = (ra_val + offset) & 0xFFFF          
+                    data = self._d_mem.read(addr) & 0xFFFF
                     self._regs.execute(rd=rd, data=data, write_enable=True)
                     
                    
                 case "STORE":
-                    src = self._decoded.ra
-                    rd = self._decoded.rd
-                    offset = self.sext(self._decoded.imm, 8)
-                    src_val = self._regs.execute(ra=src)[0] 
-                    ra_val = self._regs.execute(ra=rd)[0]
-                    addr = (ra_val + offset)
+                    src = self._decoded.ra       
+                    base = self._decoded.rb      
+                    offset = self.sext(self._decoded.addr, 6)  
+                    src_val = self._regs.execute(ra=src)[0] & 0xFFFF
+                    base_val = self._regs.execute(ra=base)[0]
+                    addr = (base_val + offset) & 0xFFFF
                     self._d_mem.write_enable(True)
                     self._d_mem.write(addr, src_val)
                     self._d_mem.write_enable(False)
